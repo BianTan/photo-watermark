@@ -17,6 +17,7 @@ export default class CuElement<Props extends ElementProps = ElementProps> {
   id: number;
   style: Record<string, any>;
   __cu: null | CanvasUtils = null;
+  measureText: TextMetrics | null = null;
 
   constructor(opts?: Props) {
     const { style = {} } = opts || {}
@@ -57,7 +58,7 @@ export default class CuElement<Props extends ElementProps = ElementProps> {
     this.markRedraw()
     return this
   }
-  protected attrKV(key: string, value: unknown) {
+  attrKV(key: string, value: unknown) {
     (this as any)[key] = value
   }
   markRedraw() {

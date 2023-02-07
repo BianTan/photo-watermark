@@ -1,5 +1,5 @@
 import { isNumber } from '../is'
-import CuElement from './CuElement'
+import CuElement, { ElementProps } from './CuElement'
 
 interface TextStyleProps {
   x?: number;
@@ -11,13 +11,12 @@ interface TextStyleProps {
   textAlign?: 'left' | 'center' | 'right';
   fontFamily?: string;
 }
-interface TextProps {
+interface TextProps extends ElementProps  {
   style?: TextStyleProps;
 }
 
 class CUText extends CuElement<TextProps> {
   type = 'text';
-  measureText: TextMetrics | null = null;
 
   constructor(opts?: TextProps) {
     super(opts)
