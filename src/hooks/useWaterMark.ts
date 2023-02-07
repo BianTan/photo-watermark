@@ -58,7 +58,7 @@ export async function useWaterMark(cu: canvasUtils.CanvasUtils, {
   cu.add(leftText1)
   const leftText2 = new canvasUtils.Text({
     style: {
-      text: exif.Model ? dayjs(exif.DateTimeOriginal).format('YYYY/MM/DD hh:mm') : '',
+      text: exif.Model ? dayjs(exif.DateTimeOriginal).format('YYYY/MM/DD HH:mm') : '',
       color: '#625f5f',
       size: H2.value,
       x: padding.value,
@@ -84,7 +84,7 @@ export async function useWaterMark(cu: canvasUtils.CanvasUtils, {
   cu.add(rightText1)
   const rightText2 = new canvasUtils.Text({
     style: {
-      text: exif.LensModel ? exif.LensModel : '',
+      text: exif.LensModel ? exif.LensModel.replace(`${exif.Model} `, '') : '',
       color: '#625f5f',
       size: H2.value,
       x: config.width - padding.value - (rightText1.measureText?.width || 0),

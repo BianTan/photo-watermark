@@ -39,14 +39,16 @@ class CUText extends CuElement<TextProps> {
       fontFamily
     } = this.style
     
+    ctx.textAlign = textAlign
+    ctx.fillStyle = color
     let font = `${fontWeight}`
     font += isNumber(size) ? ` ${(Math.round(size * 100) / 100)}px` : ` ${size}`
     font += ` ${fontFamily ? fontFamily : 'serif'}`
     ctx.font = font
-    this.measureText = ctx.measureText(text)
-
     ctx.textAlign = textAlign
     ctx.fillStyle = color
+    this.measureText = ctx.measureText(text)
+    
     ctx.fillText(text, x, y)
     ctx.restore()
   }

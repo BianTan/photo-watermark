@@ -4,6 +4,7 @@
     <div class="btn-group">
       <div class="upload btn" @click="onUpload">上传图片</div>
       <div class="download btn" @click="onDownload">下载图片</div>
+      <div class="btn">获取宽度</div>
     </div>
   </div>
 </template>
