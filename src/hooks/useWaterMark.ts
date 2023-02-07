@@ -45,12 +45,6 @@ export async function useWaterMark(cu: canvasUtils.CanvasUtils, {
     fontFamily: config.fontFamily
   }
   
-  const text = new canvasUtils.Text({
-    style: {
-      text: 'TEXT'
-    }
-  })
-  cu.add(text)
   // 左侧文字
   const leftText1 = new canvasUtils.Text({
     style: {
