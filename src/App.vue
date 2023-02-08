@@ -67,11 +67,11 @@ const onUpload = async () => {
 }
 
 const onDownload = () => {
-  const canvas = cu?.canvas
-  const ctx = cu?.ctx
+  const canvas = cu.value?.canvas
+  const ctx = cu.value?.ctx
   if (!canvas || !ctx || !file.value) return
 
-  const quality = 90
+  const quality = 92
   if (['image/jpeg', 'image/jpg'].includes(file.value.type)) {
     canvas.toBlob(blob => {
       if (!blob) return

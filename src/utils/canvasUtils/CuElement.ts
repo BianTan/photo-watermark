@@ -2,12 +2,6 @@ import * as cuUtil from '../index'
 import { isObject } from '../is';
 import { CanvasUtils } from './index'
 
-export interface ElementStyle {
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number
-}
 export interface ElementProps {
   style?: Record<string, any>;
 }
@@ -17,7 +11,6 @@ export default class CuElement<Props extends ElementProps = ElementProps> {
   id: number;
   style: Record<string, any>;
   __cu: null | CanvasUtils = null;
-  measureText: TextMetrics | null = null;
 
   constructor(opts?: Props) {
     const { style = {} } = opts || {}
@@ -35,6 +28,11 @@ export default class CuElement<Props extends ElementProps = ElementProps> {
   }
   
   draw() {}
+
+  getWidth(): number | null {
+    return null
+  }
+
   attr(keyOrObj: Props): this
   attr<T extends keyof Props>(keyOrObj: T, value: Props[T]): this
   attr(keyOrObj: keyof Props | Props, value?: unknown): this {

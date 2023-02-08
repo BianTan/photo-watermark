@@ -39,6 +39,8 @@ export async function useWaterMark(cu: canvasUtils.CanvasUtils, {
   console.log('exif: ', exif)
   console.log('image width', image.width)
   console.log('image height', image.height)
+  // logo
+  const logoDom = await url2Image(getLogo(exif.Make))
 
   const params = {
     fontWeight: config.fontWeight,
@@ -81,21 +83,34 @@ export async function useWaterMark(cu: canvasUtils.CanvasUtils, {
       ...params
     }
   })
-  cu.add(rightText1)
   const rightText2 = new canvasUtils.Text({
     style: {
       text: exif.LensModel ? exif.LensModel.replace(`${exif.Model} `, '') : '',
+      textAlign: 'right',
       color: '#625f5f',
       size: H2.value,
-      x: config.width - padding.value - (rightText1.measureText?.width || 0),
+      x: config.width - padding.value,
       y: image.height + padding.value + H1.value + SPACE.value,
       ...params
     }
   })
+  cu.add(rightText1)
   cu.add(rightText2)
 
+  // 计算右侧文本宽度，使两行文本居左对齐
+  const rightText1Width = rightText1.width
+  const rightText2Width = rightText2.width
+  const maxWidth = Math.max(rightText1Width, rightText2Width)
+  const diff = Math.abs(rightText1Width - rightText2Width)
+
+  const instance = rightText1Width > rightText2Width ? rightText2 : rightText1
+  instance.attr({
+    style: {
+      x: config.width - padding.value - diff
+    }
+  })
+
   // 相机 Logo
-  const logoDom = await url2Image(getLogo(exif.Make))
   if (!logoDom) return null
 
   const logoHeight = H1.value + H2.value
@@ -103,7 +118,7 @@ export async function useWaterMark(cu: canvasUtils.CanvasUtils, {
   const logo = new canvasUtils.Image({
     style: {
       image: logoDom,
-      x: config.width - padding.value - (rightText1?.measureText?.width || 0) - (SPACE.value * 2) - logoWidth,
+      x: config.width - padding.value - maxWidth - (SPACE.value * 2) - logoWidth,
       y: image.height + padding.value + SPACE.value / 2,
       width: logoWidth,
       height: logoHeight

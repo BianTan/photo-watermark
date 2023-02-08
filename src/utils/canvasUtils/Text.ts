@@ -17,6 +17,7 @@ interface TextProps extends ElementProps  {
 
 class CUText extends CuElement<TextProps> {
   type = 'text';
+  width: number = 0;
 
   constructor(opts?: TextProps) {
     super(opts)
@@ -47,7 +48,7 @@ class CUText extends CuElement<TextProps> {
     ctx.font = font
     ctx.textAlign = textAlign
     ctx.fillStyle = color
-    this.measureText = ctx.measureText(text)
+    this.width = ctx.measureText(text).width || 0
     
     ctx.fillText(text, x, y)
     ctx.restore()
