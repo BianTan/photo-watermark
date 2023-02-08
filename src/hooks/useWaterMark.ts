@@ -113,13 +113,13 @@ export async function useWaterMark(cu: canvasUtils.CanvasUtils, {
   // 相机 Logo
   if (!logoDom) return null
 
-  const logoHeight = H1.value + H2.value
+  const logoHeight = H1.value + H2.value - SPACE.value
   const logoWidth = (logoDom.naturalWidth * logoHeight / logoDom.naturalHeight)
   const logo = new canvasUtils.Image({
     style: {
       image: logoDom,
       x: config.width - padding.value - maxWidth - (SPACE.value * 2) - logoWidth,
-      y: image.height + padding.value + SPACE.value / 2,
+      y: image.height + padding.value + SPACE.value,
       width: logoWidth,
       height: logoHeight
     }
