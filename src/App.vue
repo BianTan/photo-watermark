@@ -15,14 +15,13 @@ import { convertQualityToBit, file2DataURL, url2Image } from './utils/2'
 import * as canvasUtils from './utils/canvasUtils'
 import { saveAs } from 'file-saver'
 
-import { useCurDevice } from './hooks/useCurDevice'
+import { useCanvas } from './hooks/useCanvas'
 import { useChooseImage } from './hooks/useChooseImage'
 import { useWaterMark } from './hooks/useWaterMark'
 
-let cu: canvasUtils.CanvasUtils | null = null
-const { isIOS } = useCurDevice()
 const containerRef = ref()
 const file = ref<File | undefined>(undefined)
+
 // 实例
 const cuInstance = ref<{
   leftText1: canvasUtils.Text;
@@ -36,10 +35,12 @@ const config = reactive({
   scale: 1,
   width: 0,
   height: 0,
-  standardPadding: 130,
   fontWeight: 800,
+  rem: 0.036,
   fontFamily: 'PingFangSC-Regular,PingFang,sans-serif'
 })
+
+const cu = useCanvas.init()
 
 const onUpload = async () => {
 
@@ -55,39 +56,11 @@ const onUpload = async () => {
   const photo = await url2Image(photoBase64)
   if (!photo) return
 
-  // 获取、换算参数
-  // 最大 canvas 分辨率有限制, 限制是针对面积
-  // IOS9 以下最大允许 2096 2096 的 canvas，IOS9以上最大允许 4096 4096 (safari 也是)
-  let { width, height } = photo
-  if (isIOS.value) {
-    if (width > height) {
-      width = Math.min(photo.width, 4096)
-      height = width * photo.height / photo.width
-    } else {
-      height = Math.min(photo.height, 4096)
-      width = height * photo.width / photo.height
-    }
-  }
-
-  const { innerWidth } = window
-  config.scale = Math.round(Math.min(innerWidth - 32, 648) / width * 100) / 100
-  config.width = width * config.scale
-  config.height = (height + (config.standardPadding * 2) + (width * 0.03) + (width * 0.02) + (width * 0.01)) * config.scale
-
-  // 创建画布
-  if (cu) {
-    cu = cu.dispose()
-    cuInstance.value = null
-  }
-  cu = canvasUtils.init(containerRef.value, {
-    width: config.width,
-    height: config.height,
-    bgColor: 'white',
-    devicePixelRatio: 1 / config.scale
-  })
-
+  useCanvas(containerRef.value, { photo, config })
+  
+  if (!cu.value) return
   // 画上水印
-  cuInstance.value = await useWaterMark(cu, {
+  cuInstance.value = await useWaterMark(cu.value, {
     photo,
     config
   })

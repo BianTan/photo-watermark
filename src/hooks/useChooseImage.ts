@@ -1,10 +1,10 @@
 
 const input = document.createElement('input')
 input.type = 'file'
+let isClick = false
 
 export function useChooseImage(accept = 'image/*'): Promise<File | undefined> {
   return new Promise((resolve) => {
-    let isClick = false
     if (isClick) return undefined
     isClick = true
   
@@ -12,9 +12,10 @@ export function useChooseImage(accept = 'image/*'): Promise<File | undefined> {
     input.click()
 
     input.onchange = (event: Event) => {
-      const inputFile = event.target as HTMLInputElement
+      const file = (event.target as HTMLInputElement).files?.[0]
       isClick = false
-      resolve(inputFile.files?.[0])
+      input.value = ''
+      resolve(file)
     }
     input.oncancel = () => {
       isClick = false

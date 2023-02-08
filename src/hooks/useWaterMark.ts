@@ -11,9 +11,9 @@ interface IOpts {
     scale: number,
     width: number,
     height: number,
-    standardPadding: number,
     fontWeight: number | string,
     fontFamily: string;
+    rem: number;
   }
 }
 export async function useWaterMark(cu: canvasUtils.CanvasUtils, {
@@ -21,7 +21,7 @@ export async function useWaterMark(cu: canvasUtils.CanvasUtils, {
   config
 }: IOpts) {
   // 配置
-  const padding = computed(() => config.standardPadding * config.scale)
+  const padding = computed(() => config.width * config.rem)
   const H1 = computed(() => config.width * 0.03)
   const H2 = computed(() => config.width * 0.02)
   const SPACE = computed(() => config.width * 0.01)

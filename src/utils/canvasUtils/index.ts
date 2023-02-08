@@ -139,4 +139,3 @@ export function init(dom: HTMLElement, opts: CanvasUtilsOpts) {
   instances[cu.id] = cu
   return cu
 }
-
